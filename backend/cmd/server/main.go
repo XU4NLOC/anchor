@@ -4,14 +4,16 @@ import (
 	"log"
 	"net/http"
 
+	"anchor-backend/internal/config"
 	"anchor-backend/internal/router"
 )
 
 func main() {
+	cfg := config.Load()
 	handler := router.New()
 
-	log.Println("Server is running on port 8080")
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	log.Printf("Server is running on port: %v", cfg.Port)
+	if err := http.ListenAndServe(":"+cfg.Port, handler); err != nil {
 		log.Fatal(err)
 	}
 }
