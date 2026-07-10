@@ -26,6 +26,7 @@ jobs:
       - name: Lint
         uses: golangci/golangci-lint-action@v6
         with:
+          version: lastest
           working-directory: backend
 
       - name: Test
