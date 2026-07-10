@@ -1,13 +1,8 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import {Button} from '@/components/ui/button'
-import './App.css'
+import { Button } from "@/components/ui/button"
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+    <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center gap-4">
       <h1 className="text-4xl font-bold text-white">Anchor</h1>
       <Button>Start Focus Session</Button>
     </div>
