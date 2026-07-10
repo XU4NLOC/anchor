@@ -21,7 +21,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22.2'
+          go-version-file: backend/go.mod
 
       - name: Lint
         uses: golangci/golangci-lint-action@v6
