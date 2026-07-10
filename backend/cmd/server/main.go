@@ -1,15 +1,30 @@
 package main
 
 import (
+	"anchor-backend/internal/config"
+	"anchor-backend/internal/database"
+	"anchor-backend/internal/router"
+	"context"
 	"log"
 	"net/http"
-
-	"anchor-backend/internal/config"
-	"anchor-backend/internal/router"
 )
 
 func main() {
-	cfg := config.Load()
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatalf("Failed to load configuration: %v", err)
+	}
+
+	ctx := context.Background()
+
+	pool, err := database.New(ctx, cfg.DatabaseURL)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer pool.Close()
+
+	log.Printf("Connected to database")
+
 	handler := router.New()
 
 	log.Printf("Server is running on port: %v", cfg.Port)

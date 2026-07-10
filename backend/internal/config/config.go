@@ -1,15 +1,24 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 type Config struct {
-	Port string
+	Port        string
+	DatabaseURL string
 }
 
-func Load() Config {
-	return Config{
-		Port: getEnv("PORT", "8080"),
+func Load() (Config, error) {
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		return Config{}, fmt.Errorf("DATABASE_URL environment variable is not set")
 	}
+	return Config{
+		Port:        getEnv("PORT", "8080"),
+		DatabaseURL: databaseURL,
+	}, nil
 }
 
 func getEnv(key, fallback string) string {
