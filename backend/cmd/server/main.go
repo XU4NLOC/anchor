@@ -4,6 +4,7 @@ import (
 	"anchor-backend/internal/config"
 	"anchor-backend/internal/database"
 	"anchor-backend/internal/router"
+	"anchor-backend/internal/user"
 	"context"
 	"log"
 	"net/http"
@@ -25,7 +26,9 @@ func main() {
 
 	log.Printf("Connected to database")
 
-	handler := router.New()
+	repo := user.NewRepository(pool)
+
+	handler := router.New(repo)
 
 	log.Printf("Server is running on port: %v", cfg.Port)
 	if err := http.ListenAndServe(":"+cfg.Port, handler); err != nil {
