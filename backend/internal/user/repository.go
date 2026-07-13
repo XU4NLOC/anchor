@@ -32,3 +32,21 @@ func (r *Repository) Create(ctx context.Context, email, passwordHash, displayNam
 
 	return &u, nil
 }
+
+func (r *Repository) FindByEmail(ctx context.Context, email string) (*User, error) {
+	query := `
+		SELECT id, email, password_hash, display_name, created_at, updated_at
+		FROM users
+		WHERE email = $1
+	`
+
+	var u User
+	err := r.pool.QueryRow(ctx, query, email).Scan(
+		&u.ID, &u.Email, &u.PasswordHash, &u.DisplayName, &u.CreatedAt, &u.UpdatedAt,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("user: failed to find by email: %w", err)
+	}
+
+	return &u, nil
+}
