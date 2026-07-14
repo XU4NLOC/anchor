@@ -28,7 +28,7 @@ func main() {
 
 	repo := user.NewRepository(pool)
 
-	handler := router.New(repo)
+	handler := router.New(repo, cfg.JWTSecret)
 
 	log.Printf("Server is running on port: %v", cfg.Port)
 	if err := http.ListenAndServe(":"+cfg.Port, handler); err != nil {
