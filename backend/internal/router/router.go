@@ -2,6 +2,7 @@ package router
 
 import (
 	"anchor-backend/internal/handler"
+	"anchor-backend/internal/middleware"
 	"anchor-backend/internal/user"
 	"net/http"
 )
@@ -16,6 +17,10 @@ func New(repo *user.Repository, jwtSecret string) http.Handler {
 
 	loginHandler := &handler.LoginHandler{Repo: repo, JWTSecret: jwtSecret}
 	mux.HandleFunc("POST /login", loginHandler.Login)
+
+	authMiddleware := middleware.Auth(jwtSecret)
+	meHandler := &handler.MeHandler{Repo: repo}
+	mux.Handle("GET /me", authMiddleware(http.HandlerFunc(meHandler.Me)))
 
 	return mux
 }
